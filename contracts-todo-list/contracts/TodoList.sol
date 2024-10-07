@@ -19,14 +19,14 @@ contract TodoList {
 
     event TaskDeleted(uint id);    
 
-//    mapping(address => uint) public userTaskCounts;
+   mapping(address => uint) public userTaskCounts;
 
 function createTask(string memory _content) public {
     require(bytes(_content).length > 0, "Task content cannot be empty");
     
     taskCount++;
     tasks[taskCount] = Task(taskCount, _content, false, msg.sender);
-    // userTaskCounts[msg.sender]++;
+    userTaskCounts[msg.sender]++;
     
     emit TaskCreated(taskCount, _content, msg.sender);
 }
@@ -34,14 +34,14 @@ function createTask(string memory _content) public {
 
 function deleteTask(uint _id) public {
     require(tasks[_id].owner == msg.sender, "Only the task owner can delete the task");
-    // userTaskCounts[msg.sender]--;
+    userTaskCounts[msg.sender]--;
     delete tasks[_id];  // Directly delete the task without using a local variable
     emit TaskDeleted(_id);
 }
 
 
 function getTaskCountByUser() public view returns (uint) {
-    // return userTaskCounts[msg.sender];
+    return userTaskCounts[msg.sender];
 }
 
     function updateTask(uint _id, string memory _content, bool _completed) public {
