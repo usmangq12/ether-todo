@@ -78,6 +78,9 @@ const loadTasks = async () => {
       let tasksFromBlockchain = [];
       for (let i = 1; i <= taskCountNumber; i++) {
         const task = await contract.getTaskById(i);
+        if (task[0].toString() === '0' || task[3] === '0x0000000000000000000000000000000000000000') {
+          continue;
+        }
         tasksFromBlockchain.push(task);
       }
 
